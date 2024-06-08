@@ -1,0 +1,100 @@
+/*
+    int main() {
+        printf("\r\nStarting socket demo\r\n\r\n");
+
+    #ifdef MBED_CONF_MBED_TRACE_ENABLE
+        mbed_trace_init();
+    #endif
+        // set rfid card
+        pc.set_baud(9600); 
+        char buffer[128];
+        snprintf(buffer, sizeof(buffer),"starting...\r\n");
+        pc.write(buffer, strlen(buffer));
+
+        // Init. RC522 Chip
+        RfChip.PCD_Init();
+        snprintf(buffer, sizeof(buffer),"init passed\r\n");
+        pc.write(buffer, strlen(buffer));
+        
+        LedGreen = 1;
+        
+        while (true) {
+        LedGreen = 1;
+
+        // Look for new cards
+        if ( ! RfChip.PICC_IsNewCardPresent())
+        {
+        ThisThread::sleep_for(1000ms);
+        snprintf(buffer, sizeof(buffer),"not card  found\r\n");
+        pc.write(buffer, strlen(buffer));
+        continue;
+        }
+
+        // Select one of the cards
+        if (!RfChip.PICC_ReadCardSerial())
+        {
+        ThisThread::sleep_for(1000ms);
+        //pc.printf("card read\r\n");
+        snprintf(buffer, sizeof(buffer),"card read\r\n");
+        pc.write(buffer, strlen(buffer));
+        continue;
+        }
+
+        LedGreen = 0;
+
+        // Print Card UID
+        //pc.printf("Card UID: ");
+        snprintf(buffer, sizeof(buffer),"Card UID: ");
+        pc.write(buffer, strlen(buffer));
+        for (uint8_t i = 0; i < RfChip.uid.size; i++)
+        {
+        char uidStr[5]; // Enough to hold one byte in hex, including null terminator
+        //pc.printf(" %X02", RfChip.uid.uidByte[i]);
+        snprintf(uidStr, sizeof(uidStr), " %02X", RfChip.uid.uidByte[i]);
+                strncat(buffer, uidStr, sizeof(buffer) - strlen(buffer) - 1);
+        }
+        strcat(buffer, "\n\r");
+        pc.write(buffer, strlen(buffer));
+        
+
+        // Print Card type
+        uint8_t piccType = RfChip.PICC_GetType(RfChip.uid.sak);
+        //pc.printf("PICC Type: %s \n\r", RfChip.PICC_GetTypeName(piccType));
+        snprintf(buffer, sizeof(buffer), "PICC Type: %s \n\r", RfChip.PICC_GetTypeName(piccType));
+        pc.write(buffer, strlen(buffer));
+        
+            SocketDemo *example = new SocketDemo();
+            MBED_ASSERT(example);
+            std::string result = example->run();
+            
+            if (result.find("DONE") != std::string::npos){
+                // 伺服馬達程式碼
+                PwmOut PIN_SG90(PB_1); 
+                PIN_SG90.period(0.01f); // 週期為 10 毫秒 (100 Hz)
+                float open_duty = 1.0f;
+                float close_duty = 0.0f;
+
+                for (int i = 0; i < 1; i++) {
+                    // 增加 PWM 占空比，從 0.0 到 1.0
+                    for (float duty_cycle = 0.0f; duty_cycle <= 1.0f; duty_cycle += 0.05f) {
+                        PIN_SG90.write(duty_cycle);  // 設置占空比
+                        // printf("0->1\r\n");
+                        ThisThread::sleep_for(50ms); // 延遲 100 毫秒
+                    }
+                    ThisThread::sleep_for(1000ms);
+                    // 減少 PWM 占空比，從 1.0 到 0.0
+                    for (float duty_cycle = 1.0f; duty_cycle >= 0.0f; duty_cycle -= 0.05f) {
+                        PIN_SG90.write(duty_cycle);  // 設置占空比
+                        // printf("1->0\r\n");
+                        ThisThread::sleep_for(50ms); // 延遲 100 毫秒
+                    }
+                }
+            }
+        ThisThread::sleep_for(5000ms);
+        snprintf(buffer, sizeof(buffer),"Wait for next round: ");
+        // break;
+    }
+            
+        return 0;
+    }
+*/
