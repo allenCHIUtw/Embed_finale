@@ -1,0 +1,9 @@
+【必須先安裝】
+sudo apt-get update
+sudo apt-get install libcurl4-openssl-dev libopencv-dev
+
+【編譯】
+g++ -o capture_image capture_image.cpp -lcurl `pkg-config --cflags --libs opencv4`
+
+【執行】
+./capture_image
